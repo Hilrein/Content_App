@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Контент-Планер{% endblock %}</title>
+</head>
+<body>
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+            <div class="message {{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    </div>
+{% endif %}
+    <header>
+        <h1>Мой Контент-Планер 💙</h1>
+        <nav>
+            <a href="{% url 'content_list' %}">Список контента</a>
+            <a href="{% url 'content_create' %}">Создать контент</a>
+            <a href="{% url 'create_category' %}">Создать категорию</a>
+            <li>Категории:
+                    <ul>
+                        {% for category in categories %}
+                            <li>{{ category.name }}</li>
+                        {% endfor %}
+                    </ul>
+            </li>
+
+            {% if user.is_authenticated %}
+                Привет, {{ user.username }}!
+                <a href="{% url 'logout' %}">Выйти</a>
+            {% else %}
+                <a href="{% url 'login' %}">Войти</a>
+                <a href="{% url 'register' %}">Регистрация</a>
+            {% endif %}
+        </nav>
+    </header>
+    <hr>
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+</body>
+<script src="{% static 'js/messages.js' %}"></script>
+</html>
